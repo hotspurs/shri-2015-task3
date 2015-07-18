@@ -1,0 +1,55 @@
+/*
+ * Retina helper mixins for Compass
+ * http://www.joelambert.co.uk
+ *
+ * Copyright 2012, Joe Lambert.
+ * Free to use under the MIT license.
+ * http://joelambert.mit-license.org/
+ */
+/* line 3, ../_sass/common.sass */
+* {
+  outline: none;
+}
+
+/* line 6, ../_sass/common.sass */
+html, body {
+  height: 100%;
+  background-color: green;
+  font-family: "helveticaneuecyrroman";
+}
+
+/* line 16, ../_sass/common.sass */
+.button {
+  height: 40px;
+  width: 174px;
+  background-image: url('../images/sprites/buttons-s0a96fceffe.png');
+  background-position: 0 0;
+  background-repeat: no-repeat;
+}
+/* line 29, ../_sass/_retina-sprites.scss */
+.button:hover {
+  background-position: 0 -80px;
+}
+/* line 35, ../_sass/_retina-sprites.scss */
+.button:active {
+  background-position: 0 -40px;
+}
+@media (-webkit-min-device-pixel-ratio: 1.5), (min--moz-device-pixel-ratio: 1.5), (-o-min-device-pixel-ratio: 3 / 2), (min-device-pixel-ratio: 1.5), (min-resolution: 144dpi) {
+  /* line 45, ../_sass/_retina-sprites.scss */
+  .button {
+    background-image: url('../images/sprites-retina/buttons-sd2e6693141.png');
+    background-position: 0 0;
+    -moz-background-size: 174px auto;
+    -o-background-size: 174px auto;
+    -webkit-background-size: 174px auto;
+    background-size: 174px auto;
+  }
+  /* line 56, ../_sass/_retina-sprites.scss */
+  .button:hover {
+    background-position: 0 -80px;
+  }
+  /* line 63, ../_sass/_retina-sprites.scss */
+  .button:active {
+    background-position: 0 -40px;
+  }
+}

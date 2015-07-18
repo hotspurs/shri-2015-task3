@@ -1,0 +1,20 @@
+@import includes
+
+*
+  outline : none
+
+html,body
+  height : 100%
+  background-color : green
+  +hel_rom
+
+
+$sprites: sprite-map("sprites/buttons/*.png")
+$sprites2x: sprite-map("sprites-retina/buttons/*.png")
+
+
+.button
+  +retina-sprite(signIn, $hover: true, $active: true)
+
+
+

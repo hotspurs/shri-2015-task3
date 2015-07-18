@@ -1,0 +1,39 @@
+@font-face {
+    font-family: 'helveticaneuecyrbold';
+    src: url('fonts/helveticaneuecyr-bold-webfont.eot');
+    src: url('fonts/helveticaneuecyr-bold-webfont.eot?#iefix') format('embedded-opentype'),
+         url('fonts/helveticaneuecyr-bold-webfont.svg#helveticaneuecyrbold') format('svg'),
+         url('fonts/helveticaneuecyr-bold-webfont.woff') format('woff'),
+         url('fonts/helveticaneuecyr-bold-webfont.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+
+
+
+@font-face {
+    font-family: 'helveticaneuecyrmedium';
+    src: url('fonts/helveticaneuecyr-medium-webfont.eot');
+    src: url('fonts/helveticaneuecyr-medium-webfont.eot?#iefix') format('embedded-opentype'),
+         url('fonts/helveticaneuecyr-medium-webfont.svg#helveticaneuecyrmedium') format('svg'),
+         url('fonts/helveticaneuecyr-medium-webfont.woff') format('woff'),
+         url('fonts/helveticaneuecyr-medium-webfont.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+
+@font-face {
+    font-family: 'helveticaneuecyrroman';
+    src: url('fonts/helveticaneuecyr-roman-webfont.eot');
+    src: url('fonts/helveticaneuecyr-roman-webfont.eot?#iefix') format('embedded-opentype'),
+         url('fonts/fonts/helveticaneuecyr-roman-webfont.svg#helveticaneuecyrroman') format('svg'),
+         url('fonts/helveticaneuecyr-roman-webfont.woff') format('woff'),
+         url('fonts/helveticaneuecyr-roman-webfont.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+
+}

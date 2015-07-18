@@ -1,0 +1,165 @@
+@import "compass"
+@import "compass/css3"
+@import "compass/css3/filter"
+@import "compass/css3/transition"
+@import "compass/css3/user-interface"
+@import "retina"
+@import "rgbapng"
+
+
+// CSSPIE
+// $experimental-support-for-pie : true
+// $legacy-support-for-ie8 : true
+// $pie-behavior : url("/public/stylesheets/PIE.htc")
+// $pie-base-class : 'pie-element'
+
+$adaptive-support : false
+$adaptive-mediaqueries-show : true
+
+$ease : cubic-bezier(0.215, 0.61, 0.355, 1)
+$easeOut : cubic-bezier(0.075, 0.82, 0.165, 1)
+
+=keyframes($name)
+  @-webkit-keyframes #{$name}
+    @content
+  @-moz-keyframes #{$name}
+    @content
+  @-ms-keyframes #{$name}
+    @content
+  @keyframes #{$name}
+    @content
+
+=animation($value)
+  -webkit-animation : $value
+  -moz-animation : $value
+  -ms-animation : $value
+  -o-animation : $value
+  animation : $value
+
+=background-cover
+  +background-size(cover !important)
+  -ms-behavior: url('/public/behaviors/backgroundsize.min.htc')
+
+=background-contain
+  +background-size(contain !important)
+  -ms-behavior: url('/public/behaviors/backgroundsize.min.htc')
+
+=accelerate
+  -webkit-transform: translate3d(0, 0, 0)
+
+=placeholder
+  &::-webkit-input-placeholder
+    @content
+  &:-moz-placeholder
+    @content
+  &::-moz-placeholder
+    @content
+  &:-ms-input-placeholder
+    @content
+
+=fixrender
+  -webkit-backface-visibility: hidden
+  -webkit-perspective: 1000
+
+=filter($filter-type,$filter-amount)
+  -webkit-filter: $filter-type+unquote('(#{$filter-amount})')
+  -moz-filter: $filter-type+unquote('(#{$filter-amount})')
+  -ms-filter: $filter-type+unquote('(#{$filter-amount})')
+  -o-filter: $filter-type+unquote('(#{$filter-amount})')
+  filter: $filter-type+unquote('(#{$filter-amount})')
+
+=imgbox($img)
+  background-position : center
+  background-repeat : no-repeat
+  +background-image-retina($img)
+  width : image-width($img)
+  height : image-height($img)
+
+=hover
+  &:hover
+    @content
+
+// rabotaet
+=ie7
+  *+html &
+    @content
+=ie8
+  @media \0screen
+    @content
+
+=ie7-8
+  +ie7
+    @content
+  +ie8
+    @content
+
+=ff
+  body:not(:-moz-handler-blocked) &
+    @content
+
+=pointer-events($type: none)
+  $type: unquote($type)
+  @include experimental(pointer-events, $type, -moz, -webkit, not -o, not -ms, -khtml, official)
+
+=selection($color, $background)
+  $prefixes: ("-moz-", "-webkit-","-o-", "-ms-", "")
+  @each $prefix in $prefixes
+    &::#{$prefix}selection
+      color: $color
+      background: $background
+
+=width-between($min, $max)
+  $max : $max - 1
+  $min : $min - 1
+  @if $adaptive-mediaqueries-show
+    @media only screen and (min-width : $min * 1px) and (max-width : $max * 1px)
+      @content
+
+
+=height-between($min, $max)
+  $max : $max - 1
+  $min : $min - 1
+  @if $adaptive-mediaqueries-show
+    @media only screen and (min-height : $min * 1px) and (max-height : $max * 1px)
+      @content
+
+=width-lessthan($v)
+  $v : $v - 1
+  @if $adaptive-mediaqueries-show
+    @media only screen and (max-width : $v * 1px)
+      @content
+
+=height-lessthan($v)
+  $v : $v - 1
+  @if $adaptive-mediaqueries-show
+    @media only screen and (max-height : $v * 1px)
+      @content
+
+=width-morethan($v)
+  $v : $v
+  @if $adaptive-mediaqueries-show
+    @media only screen and (min-width : $v * 1px)
+      @content
+
+=height-morethan($v)
+  $v : $v - 1
+  @if $adaptive-mediaqueries-show
+    @media only screen and (min-height : $v * 1px)
+      @content
+
+=pixelperfect($img)
+  body
+    &::after
+      position : absolute
+      content : ' '
+      top : 0
+      left : 0
+      width : 100%
+      z-index: 99999999
+      +accelerate
+
+      background : center top no-repeat
+      +background-image-retina($img)
+      height : image-height($img)
+      +opacity(.5)
+      +pointer-events(none)
