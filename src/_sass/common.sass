@@ -5,9 +5,7 @@
 
 html,body
   height : 100%
-  background-color : green
   +hel_rom
-
 
 $sprites: sprite-map("sprites/buttons/*.png")
 $sprites2x: sprite-map("sprites-retina/buttons/*.png")
@@ -16,5 +14,22 @@ $sprites2x: sprite-map("sprites-retina/buttons/*.png")
 .button
   +retina-sprite(signIn, $hover: true, $active: true)
 
+
+.player
+  width : 300px
+  height : 400px
+  background-color : #ccc
+
+
+.loader
+  
+  &__file
+
+  &__drop-zone
+    width : 80%
+    border : 1px dashed #f00
+    padding : 15px
+    text-align : center
+    margin : 20px auto 0
 
 

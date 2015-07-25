@@ -2,7 +2,7 @@ var gulp = require('gulp'),
     connect = require('gulp-connect'),
     concat = require('gulp-concat'),
     jade = require('gulp-jade'),
-    imagemin = require('gulp-imagemin'),
+    //imagemin = require('gulp-imagemin'),
     pngquant = require('imagemin-pngquant'),
     gifsicle = require('imagemin-gifsicle'),
     newer = require('gulp-newer');
@@ -43,7 +43,8 @@ var vendor = {
       'src/fonts/stylesheet.css'
   ],
   js : [
-
+    'src/vendor/jquery-1.11.3.min.js',
+    'src/vendor/_i-bem.js'
   ]
 }
 
@@ -106,17 +107,6 @@ gulp.task('images-jpg', function () {
 });
 
 
-gulp.task('images', function () {
-  return gulp.src('src/images/{**/*,*}.{png,gif}')
-      .pipe(newer('build/public/images'))
-      .pipe(imagemin({
-          progressive: true,
-          use: [pngquant({ quality: '65-80', speed: 4 }), gifsicle({ interlaced: true }) ]
-      }))
-      .pipe(gulp.dest('build/public/images'));
-});
-
-
 gulp.task('fonts', function () {
   return gulp.src('src/fonts/{**/*,*}.{woff,ttf, svg, eot}')
       .pipe(gulp.dest('build/public/fonts'));
@@ -130,7 +120,6 @@ gulp.task('watch', function () {
 
 
   gulp.watch('src/images/{**/*,*}.{jpg,jpeg}', ['images-jpg']);
-  gulp.watch('src/images/{**/*,*}.{png,gif}', ['images']);
   gulp.watch('src/javascripts/**', ['applicationjs']);
   gulp.watch('src/stylesheets/**', ['application-css']);
   gulp.watch(vendor.js, ['vendorjs']);
@@ -138,4 +127,4 @@ gulp.task('watch', function () {
   gulp.watch(['src/vendor.js','src/application.js'], ['build-js']);
 });
 
-gulp.task("default", ["connect","templates", 'images', 'images-jpg', 'fonts', 'vendor-css', 'application-css', 'build-css', 'build-js', 'watch']);
+gulp.task("default", ["connect","templates", 'images-jpg', 'fonts', 'vendor-css', 'application-css', 'build-css', 'build-js', 'watch']);

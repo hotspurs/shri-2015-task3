@@ -5,7 +5,16 @@
     <link rel="stylesheet" href="public/build.css">
   </head>
   <body>
-    <h1>Hello world !!!</h1>
+    <div data-bem="{ &quot;player&quot;: {} }" class="player i-bem">
+      <div class="player__controls">
+        <div class="player__play"> Проиграть</div>
+        <div class="player__stop"> Остановить</div>
+      </div>
+      <form data-bem="{ &quot;loader&quot;: {} }" class="loader i-bem">
+        <input type="file" multiple class="loader__file">
+        <div class="loader__drop-zone"> Или перетащите файл сюда</div>
+      </form>
+    </div>
     <script src="public/build.js"></script>
   </body>
 </html>

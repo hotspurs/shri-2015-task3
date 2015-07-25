@@ -4,5 +4,14 @@ html
     title Default project
     link(rel="stylesheet", href="public/build.css")
   body
-    h1 Hello world !!!
+    .player(class="i-bem" data-bem='{ "player": {} }')
+      .player__controls
+        .player__play
+          |  Проиграть
+        .player__stop
+          |  Остановить
+      form.loader(class="i-bem" data-bem='{ "loader": {} }')
+        input.loader__file(type="file" multiple)
+        .loader__drop-zone
+          |  Или перетащите файл сюда
     script(src="public/build.js")

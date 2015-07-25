@@ -14,11 +14,10 @@
 /* line 6, ../_sass/common.sass */
 html, body {
   height: 100%;
-  background-color: green;
   font-family: "helveticaneuecyrroman";
 }
 
-/* line 16, ../_sass/common.sass */
+/* line 14, ../_sass/common.sass */
 .button {
   height: 40px;
   width: 174px;
@@ -52,4 +51,20 @@ html, body {
   .button:active {
     background-position: 0 -40px;
   }
+}
+
+/* line 18, ../_sass/common.sass */
+.player {
+  width: 300px;
+  height: 400px;
+  background-color: #ccc;
+}
+
+/* line 28, ../_sass/common.sass */
+.loader__drop-zone {
+  width: 80%;
+  border: 1px dashed #f00;
+  padding: 15px;
+  text-align: center;
+  margin: 20px auto 0;
 }
