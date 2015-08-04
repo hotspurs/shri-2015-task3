@@ -5,7 +5,9 @@
 
 html,body
   height : 100%
+  font-size : 12px
   +hel_rom
+
 
 $sprites: sprite-map("sprites/buttons/*.png")
 $sprites2x: sprite-map("sprites-retina/buttons/*.png")
@@ -16,9 +18,76 @@ $sprites2x: sprite-map("sprites-retina/buttons/*.png")
 
 
 .player
-  width : 300px
-  height : 400px
-  background-color : #ccc
+  width : 440px
+  position : relative
+  top : 50px
+  left : 50px
+
+  &__actions
+    background-color : #232326
+    height : 20px
+    padding : 15px
+    +border-radius(5px 5px 0 0)
+
+  &__action
+    width : 0
+    height : 0
+    border-style : solid
+    border-width : 10px 0 10px 17px
+    border-color : transparent transparent transparent #ffffff
+    cursor : pointer
+    float : left
+    margin-right : 15px
+    &_stop
+      border : none
+      background-color : #fff
+      width : 17px
+      height : 20px
+
+  &__time
+    color : #fff
+    line-height : 20px
+
+  &__progress
+    float : left
+    margin-top : 6px
+    margin-right : 8px
+
+  &__volume
+    float : right
+    margin-top : 6px
+    @extend %clearfix
+
+  &__volume-icon
+    +imgbox('player__volume-icon.png')
+    float : left
+    margin-right : 5px
+    margin-top : -3px
+
+
+  &__song
+    height : 26px
+    line-height : 26px
+    background-color : #19191b
+    padding-left : 46px
+    color : #fff
+
+.progress
+  height : 8px
+  background-color : #3f3f42
+  +border-radius(3px)
+  overflow : hidden
+  position : relative
+  &_type_time
+    width : 220px
+  &_type_volume
+    width : 48px
+
+  &__current
+    height : 8px
+    width : 0
+    background-color : #1b93c7
+    
 
 
 .loader

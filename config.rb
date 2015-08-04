@@ -11,9 +11,6 @@ css_dir = "src/stylesheets"
 sass_dir = "src/_sass"
 images_dir = "src/images"
 javascripts_dir = "src/javascripts"
-http_javascripts_dir = "/public"
-http_stylesheets_dir = "/public"
-http_images_dir = "/public/images"
 
 
 # You can select your preferred output style here (can be overridden via the command line):

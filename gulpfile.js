@@ -2,9 +2,6 @@ var gulp = require('gulp'),
     connect = require('gulp-connect'),
     concat = require('gulp-concat'),
     jade = require('gulp-jade'),
-    //imagemin = require('gulp-imagemin'),
-    pngquant = require('imagemin-pngquant'),
-    gifsicle = require('imagemin-gifsicle'),
     newer = require('gulp-newer');
 
 
@@ -44,6 +41,7 @@ var vendor = {
   ],
   js : [
     'src/vendor/jquery-1.11.3.min.js',
+    'src/vendor/jquery-ui.min.js',
     'src/vendor/_i-bem.js'
   ]
 }
@@ -75,7 +73,7 @@ gulp.task('application-css', function() {
 gulp.task('build-css', function() {
   gulp.src(['src/vendor.css', 'src/application.css'])
     .pipe(concat('build.css'))
-    .pipe(gulp.dest('build/public'))
+    .pipe(gulp.dest('build/public/stylesheets'))
     .pipe(connect.reload());
 });
 
@@ -100,10 +98,10 @@ gulp.task('build-js', ['vendorjs','applicationjs'], function(){
 })
 
 
-gulp.task('images-jpg', function () {
-  return gulp.src('src/images/{**/*,*}.{jpg,jpeg}')
+gulp.task('images', function () {
+  return gulp.src('src/images/{**/*,*}.{jpg,jpeg,png}')
       .pipe(newer('build/public/images'))
-      .pipe(gulp.dest('build/public/imagess'));
+      .pipe(gulp.dest('build/public/images'));
 });
 
 
@@ -119,7 +117,7 @@ gulp.task('watch', function () {
   gulp.watch(['./buld/public/build.*'],['build-watch']);
 
 
-  gulp.watch('src/images/{**/*,*}.{jpg,jpeg}', ['images-jpg']);
+  gulp.watch('src/images/{**/*,*}.{jpg,jpeg,png}', ['images']);
   gulp.watch('src/javascripts/**', ['applicationjs']);
   gulp.watch('src/stylesheets/**', ['application-css']);
   gulp.watch(vendor.js, ['vendorjs']);
@@ -127,4 +125,4 @@ gulp.task('watch', function () {
   gulp.watch(['src/vendor.js','src/application.js'], ['build-js']);
 });
 
-gulp.task("default", ["connect","templates", 'images-jpg', 'fonts', 'vendor-css', 'application-css', 'build-css', 'build-js', 'watch']);
+gulp.task("default", ["connect","templates", 'images', 'fonts', 'vendor-css', 'application-css', 'build-css', 'build-js', 'watch']);
