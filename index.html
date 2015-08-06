@@ -5,27 +5,42 @@
     <link rel="stylesheet" href="public/stylesheets/build.css">
   </head>
   <body>
-    <div data-bem="{ &quot;player&quot;: {} }" class="player i-bem">
-      <div class="player__actions">
-        <div class="player__volume">
-          <div class="player__volume-icon"></div>
-          <div data-bem="{ &quot;progress&quot;: {} }" class="progress progress_type_volume i-bem">
-            <div class="progress__current"></div>
+    <div class="wrapper">
+      <div data-bem="{ &quot;player&quot;: {} }" class="player i-bem">
+        <div class="player__wrapper">
+          <div class="player__actions">
+            <div class="player__volume">
+              <div class="player__volume-icon"></div>
+              <div data-bem="{ &quot;progress&quot;: {} }" class="progress progress_type_volume i-bem">
+                <div class="progress__current"></div>
+              </div>
+            </div>
+            <div class="player__action"></div>
+            <div class="player__progress">
+              <div data-bem="{ &quot;progress&quot;: {} }" class="progress progress_type_time i-bem">
+                <div class="progress__current"></div>
+              </div>
+            </div>
+            <div class="player__time"></div>
           </div>
-        </div>
-        <div class="player__action"></div>
-        <div class="player__progress">
-          <div data-bem="{ &quot;progress&quot;: {} }" class="progress progress_type_time i-bem">
-            <div class="progress__current"></div>
+          <div class="player__icons">
+            <div class="player__spiner"></div>
+            <div title="Визуализатор спектра" class="player__icon player__icon_visualizator"></div>
+            <div title="Эквалайзер" class="player__icon player__icon_equalizer"></div>
           </div>
+          <div class="player__song"></div>
+          <form data-bem="{ &quot;loader&quot;: {} }" class="loader i-bem">
+            <label class="loader__label">
+              <input type="file" multiple class="loader__file"> Загрузить
+            </label>
+            <div class="loader__drop-zone"> Или перетащите файл сюда</div>
+          </form>
         </div>
-        <div class="player__time"></div>
+        <div data-bem="{ &quot;visualizator&quot;: {} }" class="visualizator i-bem">
+          <canvas class="visualizator__canvas"></canvas>
+          <div class="visualizator__close"></div>
+        </div>
       </div>
-      <div class="player__song"></div>
-      <form data-bem="{ &quot;loader&quot;: {} }" class="loader i-bem">
-        <input type="file" multiple class="loader__file">
-        <div class="loader__drop-zone"> Или перетащите файл сюда</div>
-      </form>
     </div>
     <script src="public/build.js"></script>
   </body>
