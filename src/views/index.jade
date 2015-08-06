@@ -4,20 +4,32 @@ html
     title Default project
     link(rel="stylesheet", href="public/stylesheets/build.css")
   body
-    .player(class="i-bem" data-bem='{ "player": {} }' )
-      .player__actions
-        .player__volume
-          .player__volume-icon
-          .progress.progress_type_volume(class="i-bem" data-bem='{ "progress": {} }' )
-            .progress__current
-        .player__action
-        .player__progress
-          .progress.progress_type_time(class="i-bem" data-bem='{ "progress": {} }' )
-            .progress__current
-        .player__time
-      .player__song
-      form.loader(class="i-bem" data-bem='{ "loader": {} }')
-        input.loader__file(type="file" multiple)
-        .loader__drop-zone
-          |  Или перетащите файл сюда
+    .wrapper
+      .player(class="i-bem" data-bem='{ "player": {} }' )
+        .player__wrapper
+          .player__actions
+            .player__volume
+              .player__volume-icon
+              .progress.progress_type_volume(class="i-bem" data-bem='{ "progress": {} }' )
+                .progress__current
+            .player__action
+            .player__progress
+              .progress.progress_type_time(class="i-bem" data-bem='{ "progress": {} }' )
+                .progress__current
+            .player__time
+          .player__icons
+            .player__spiner
+            .player__icon.player__icon_visualizator(title="Визуализатор спектра")
+            .player__icon.player__icon_equalizer(title="Эквалайзер")
+          .player__song
+          form.loader(class="i-bem" data-bem='{ "loader": {} }')
+            label.loader__label
+              input.loader__file(type="file" multiple)
+              |  Загрузить
+            .loader__drop-zone
+              |  Или перетащите файл сюда
+        .visualizator(class="i-bem" data-bem='{ "visualizator": {} }' )
+          canvas.visualizator__canvas
+          .visualizator__close
+
     script(src="public/build.js")

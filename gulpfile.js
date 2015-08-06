@@ -51,6 +51,10 @@ var application = {
     'src/stylesheets/**'
   ],
   js : [
+    'src/javascripts/loader.js',
+    'src/javascripts/progress.js',
+    'src/javascripts/player.js',
+    'src/javascripts/visualizator.js',
     'src/javascripts/main.js'
   ]
 };

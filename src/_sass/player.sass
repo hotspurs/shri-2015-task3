@@ -1,0 +1,129 @@
+@import includes
+
+.player
+  position : relative
+  &__wrapper
+    width : 440px
+    position : absolute
+    top : 50px
+    left : 50px
+
+  &__actions
+    background-color : #232326
+    height : 20px
+    padding : 15px
+    +border-radius(5px 5px 0 0)
+
+  &__action
+    width : 0
+    height : 0
+    border-style : solid
+    border-width : 10px 0 10px 17px
+    border-color : transparent transparent transparent #ffffff
+    cursor : pointer
+    float : left
+    margin-right : 15px
+    &_stop
+      border : none
+      background-color : #fff
+      width : 17px
+      height : 20px
+
+  &__time
+    color : #fff
+    line-height : 20px
+
+  &__progress
+    float : left
+    margin-top : 6px
+    margin-right : 8px
+
+  &__volume
+    float : right
+    margin-top : 6px
+    @extend %clearfix
+
+  &__volume-icon
+    +imgbox('player__volume-icon.png')
+    float : left
+    margin-right : 5px
+    margin-top : -3px
+
+  &__icons
+    text-align : center
+    background-color : #232326
+    padding : 5px 0
+    position : relative
+  &__icon
+    display : inline-block
+    +opacity(0.2)
+    &_visualizator
+      +imgbox('player__icon_visualizator.png')
+      margin-right : 15px
+    &_equalizer
+      +imgbox('player__icon_equalizer.png')
+    &_inited
+      +opacity(0.5)
+      cursor : pointer
+    &_active
+      +opacity(1)
+  &__song
+    height : 26px
+    line-height : 26px
+    background-color : #19191b
+    padding-left : 46px
+    color : #fff
+  &__spiner-wrapper
+    position : absolute
+    left : 0
+    right : 0
+    top : 0
+    bottom : 0
+    background-color : #fff
+
+  &__spiner
+    font-size: 10px
+    position: absolute
+    top : 0
+    left : 15px
+    text-indent: -9999em
+    border-top: 1.1em solid rgba(255, 255, 255, 0.2)
+    border-right: 1.1em solid rgba(255, 255, 255, 0.2)
+    border-bottom: 1.1em solid rgba(255, 255, 255, 0.2)
+    border-left: 1.1em solid #ffffff
+    -webkit-transform: translateZ(0)
+    -ms-transform: translateZ(0)
+    transform: translateZ(0)
+    -webkit-animation: load8 1.1s infinite linear
+    animation: load8 1.1s infinite linear
+    border-radius: 50%
+    width: 6px
+    height: 6px
+    display : none
+    &:after
+      border-radius: 50%
+      width: 6px
+      height: 6px
+    &_visible
+      display : block
+
+@-webkit-keyframes load8
+  0%
+    -webkit-transform: rotate(0deg)
+    transform: rotate(0deg)
+
+  100%
+    -webkit-transform: rotate(360deg)
+    transform: rotate(360deg)
+
+
+@keyframes load8
+  0%
+    -webkit-transform: rotate(0deg)
+    transform: rotate(0deg)
+
+  100%
+    -webkit-transform: rotate(360deg)
+    transform: rotate(360deg)
+
+

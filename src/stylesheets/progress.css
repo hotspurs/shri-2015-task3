@@ -1,0 +1,32 @@
+/*
+ * Retina helper mixins for Compass
+ * http://www.joelambert.co.uk
+ *
+ * Copyright 2012, Joe Lambert.
+ * Free to use under the MIT license.
+ * http://joelambert.mit-license.org/
+ */
+/* line 3, ../_sass/progress.sass */
+.progress {
+  height: 8px;
+  background-color: #3f3f42;
+  -moz-border-radius: 3px;
+  -webkit-border-radius: 3px;
+  border-radius: 3px;
+  overflow: hidden;
+  position: relative;
+}
+/* line 9, ../_sass/progress.sass */
+.progress_type_time {
+  width: 220px;
+}
+/* line 11, ../_sass/progress.sass */
+.progress_type_volume {
+  width: 48px;
+}
+/* line 14, ../_sass/progress.sass */
+.progress__current {
+  height: 8px;
+  width: 0;
+  background-color: #1b93c7;
+}

@@ -470,13 +470,6 @@ th {
  * Free to use under the MIT license.
  * http://joelambert.mit-license.org/
  */
-/* line 11, ../_sass/_helpers.sass */
-.player__volume:after {
-  content: "";
-  display: table;
-  clear: both;
-}
-
 /* line 3, ../_sass/common.sass */
 * {
   outline: none;
@@ -525,14 +518,79 @@ html, body {
   }
 }
 
-/* line 20, ../_sass/common.sass */
+/*
+ * Retina helper mixins for Compass
+ * http://www.joelambert.co.uk
+ *
+ * Copyright 2012, Joe Lambert.
+ * Free to use under the MIT license.
+ * http://joelambert.mit-license.org/
+ */
+/* line 3, ../_sass/loader.sass */
+.loader {
+  background-color: #232326;
+  padding: 15px;
+  -moz-border-radius: 0 0 5px 5px;
+  -webkit-border-radius: 0;
+  border-radius: 0 0 5px 5px;
+}
+/* line 8, ../_sass/loader.sass */
+.loader__file {
+  display: none;
+}
+/* line 11, ../_sass/loader.sass */
+.loader__label {
+  display: block;
+  border: 1px solid #3f3f42;
+  padding: 5px;
+  text-align: center;
+  color: #fff;
+  cursor: pointer;
+}
+/* line 18, ../_sass/loader.sass */
+.loader__label:hover {
+  background-color: #3f3f42;
+}
+/* line 21, ../_sass/loader.sass */
+.loader__drop-zone {
+  color: #fff;
+  border: 1px dashed #3f3f42;
+  padding: 15px;
+  text-align: center;
+  margin: 15px auto 0;
+}
+/* line 27, ../_sass/loader.sass */
+.loader__drop-zone_over {
+  border-color: #fff;
+}
+
+/*
+ * Retina helper mixins for Compass
+ * http://www.joelambert.co.uk
+ *
+ * Copyright 2012, Joe Lambert.
+ * Free to use under the MIT license.
+ * http://joelambert.mit-license.org/
+ */
+/* line 11, ../_sass/_helpers.sass */
+.player__volume:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+/* line 3, ../_sass/player.sass */
 .player {
-  width: 440px;
   position: relative;
+}
+/* line 5, ../_sass/player.sass */
+.player__wrapper {
+  width: 440px;
+  position: absolute;
   top: 50px;
   left: 50px;
 }
-/* line 26, ../_sass/common.sass */
+/* line 11, ../_sass/player.sass */
 .player__actions {
   background-color: #232326;
   height: 20px;
@@ -541,7 +599,7 @@ html, body {
   -webkit-border-radius: 5px;
   border-radius: 5px 5px 0 0;
 }
-/* line 32, ../_sass/common.sass */
+/* line 17, ../_sass/player.sass */
 .player__action {
   width: 0;
   height: 0;
@@ -552,30 +610,30 @@ html, body {
   float: left;
   margin-right: 15px;
 }
-/* line 41, ../_sass/common.sass */
+/* line 26, ../_sass/player.sass */
 .player__action_stop {
   border: none;
   background-color: #fff;
   width: 17px;
   height: 20px;
 }
-/* line 47, ../_sass/common.sass */
+/* line 32, ../_sass/player.sass */
 .player__time {
   color: #fff;
   line-height: 20px;
 }
-/* line 51, ../_sass/common.sass */
+/* line 36, ../_sass/player.sass */
 .player__progress {
   float: left;
   margin-top: 6px;
   margin-right: 8px;
 }
-/* line 56, ../_sass/common.sass */
+/* line 41, ../_sass/player.sass */
 .player__volume {
   float: right;
   margin-top: 6px;
 }
-/* line 61, ../_sass/common.sass */
+/* line 46, ../_sass/player.sass */
 .player__volume-icon {
   background-position: center;
   background-repeat: no-repeat;
@@ -587,7 +645,7 @@ html, body {
   margin-top: -3px;
 }
 @media only screen and (-webkit-min-device-pixel-ratio: 2) {
-  /* line 61, ../_sass/common.sass */
+  /* line 46, ../_sass/player.sass */
   .player__volume-icon {
     -moz-background-size: 13px auto;
     -o-background-size: 13px auto;
@@ -596,7 +654,68 @@ html, body {
     background-image: url('../images/player__volume-icon@2x.png?1438687600');
   }
 }
-/* line 68, ../_sass/common.sass */
+/* line 52, ../_sass/player.sass */
+.player__icons {
+  text-align: center;
+  background-color: #232326;
+  padding: 5px 0;
+  position: relative;
+}
+/* line 57, ../_sass/player.sass */
+.player__icon {
+  display: inline-block;
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=20);
+  opacity: 0.2;
+}
+/* line 60, ../_sass/player.sass */
+.player__icon_visualizator {
+  background-position: center;
+  background-repeat: no-repeat;
+  background-image: url('../images/player__icon_visualizator.png?1438778643');
+  width: 18px;
+  height: 20px;
+  margin-right: 15px;
+}
+@media only screen and (-webkit-min-device-pixel-ratio: 2) {
+  /* line 60, ../_sass/player.sass */
+  .player__icon_visualizator {
+    -moz-background-size: 18px auto;
+    -o-background-size: 18px auto;
+    -webkit-background-size: 18px auto;
+    background-size: 18px auto;
+    background-image: url('../images/player__icon_visualizator@2x.png?1438778648');
+  }
+}
+/* line 63, ../_sass/player.sass */
+.player__icon_equalizer {
+  background-position: center;
+  background-repeat: no-repeat;
+  background-image: url('../images/player__icon_equalizer.png?1438778617');
+  width: 22px;
+  height: 20px;
+}
+@media only screen and (-webkit-min-device-pixel-ratio: 2) {
+  /* line 63, ../_sass/player.sass */
+  .player__icon_equalizer {
+    -moz-background-size: 22px auto;
+    -o-background-size: 22px auto;
+    -webkit-background-size: 22px auto;
+    background-size: 22px auto;
+    background-image: url('../images/player__icon_equalizer@2x.png?1438778623');
+  }
+}
+/* line 65, ../_sass/player.sass */
+.player__icon_inited {
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=50);
+  opacity: 0.5;
+  cursor: pointer;
+}
+/* line 68, ../_sass/player.sass */
+.player__icon_active {
+  filter: progid:DXImageTransform.Microsoft.Alpha(enabled=false);
+  opacity: 1;
+}
+/* line 70, ../_sass/player.sass */
 .player__song {
   height: 26px;
   line-height: 26px;
@@ -604,8 +723,77 @@ html, body {
   padding-left: 46px;
   color: #fff;
 }
+/* line 76, ../_sass/player.sass */
+.player__spiner-wrapper {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  background-color: #fff;
+}
+/* line 84, ../_sass/player.sass */
+.player__spiner {
+  font-size: 10px;
+  position: absolute;
+  top: 0;
+  left: 15px;
+  text-indent: -9999em;
+  border-top: 1.1em solid rgba(255, 255, 255, 0.2);
+  border-right: 1.1em solid rgba(255, 255, 255, 0.2);
+  border-bottom: 1.1em solid rgba(255, 255, 255, 0.2);
+  border-left: 1.1em solid #ffffff;
+  -webkit-transform: translateZ(0);
+  -ms-transform: translateZ(0);
+  transform: translateZ(0);
+  -webkit-animation: load8 1.1s infinite linear;
+  animation: load8 1.1s infinite linear;
+  border-radius: 50%;
+  width: 6px;
+  height: 6px;
+  display: none;
+}
+/* line 103, ../_sass/player.sass */
+.player__spiner:after {
+  border-radius: 50%;
+  width: 6px;
+  height: 6px;
+}
+/* line 107, ../_sass/player.sass */
+.player__spiner_visible {
+  display: block;
+}
 
-/* line 75, ../_sass/common.sass */
+@-webkit-keyframes load8 {
+  0% {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+@keyframes load8 {
+  0% {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+
+/*
+ * Retina helper mixins for Compass
+ * http://www.joelambert.co.uk
+ *
+ * Copyright 2012, Joe Lambert.
+ * Free to use under the MIT license.
+ * http://joelambert.mit-license.org/
+ */
+/* line 3, ../_sass/progress.sass */
 .progress {
   height: 8px;
   background-color: #3f3f42;
@@ -615,26 +803,70 @@ html, body {
   overflow: hidden;
   position: relative;
 }
-/* line 81, ../_sass/common.sass */
+/* line 9, ../_sass/progress.sass */
 .progress_type_time {
   width: 220px;
 }
-/* line 83, ../_sass/common.sass */
+/* line 11, ../_sass/progress.sass */
 .progress_type_volume {
   width: 48px;
 }
-/* line 86, ../_sass/common.sass */
+/* line 14, ../_sass/progress.sass */
 .progress__current {
   height: 8px;
   width: 0;
   background-color: #1b93c7;
 }
 
-/* line 97, ../_sass/common.sass */
-.loader__drop-zone {
-  width: 80%;
-  border: 1px dashed #f00;
+/*
+ * Retina helper mixins for Compass
+ * http://www.joelambert.co.uk
+ *
+ * Copyright 2012, Joe Lambert.
+ * Free to use under the MIT license.
+ * http://joelambert.mit-license.org/
+ */
+/* line 3, ../_sass/visualizator.sass */
+.visualizator {
+  display: none;
+  width: 220px;
   padding: 15px;
-  text-align: center;
-  margin: 20px auto 0;
+  height: 196px;
+  background-color: #232326;
+  -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
+  border-radius: 5px;
+  z-index: 0;
+  position: absolute;
+}
+/* line 13, ../_sass/visualizator.sass */
+.visualizator_visible {
+  display: block;
+}
+/* line 16, ../_sass/visualizator.sass */
+.visualizator__close {
+  cursor: pointer;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 15px;
+  height: 15px;
+  -moz-border-radius: 50%;
+  -webkit-border-radius: 50%;
+  border-radius: 50%;
+  background-color: #fff;
+}
+/* line 25, ../_sass/visualizator.sass */
+.visualizator__close:before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin: -3px 0 0 -3px;
+  height: 6px;
+  width: 6px;
+  -moz-border-radius: 50%;
+  -webkit-border-radius: 50%;
+  border-radius: 50%;
+  background-color: #3f3f42;
 }

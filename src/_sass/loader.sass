@@ -1,0 +1,28 @@
+@import includes
+
+.loader
+  background-color : #232326
+  padding : 15px
+  +border-radius(0 0 5px 5px)
+
+  &__file
+    display : none
+
+  &__label
+    display : block
+    border : 1px solid #3f3f42
+    padding : 5px
+    text-align : center
+    color : #fff
+    cursor : pointer
+    &:hover
+      background-color : #3f3f42
+
+  &__drop-zone
+    color : #fff
+    border : 1px dashed #3f3f42
+    padding : 15px
+    text-align : center
+    margin : 15px auto 0
+    &_over
+      border-color : #fff
