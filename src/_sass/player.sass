@@ -67,12 +67,16 @@
       cursor : pointer
     &_active
       +opacity(1)
-  &__song
+  &__song-info
     height : 26px
     line-height : 26px
     background-color : #19191b
-    padding-left : 46px
+    padding :  0 46px
     color : #fff
+    overflow : hidden
+    text-overflow : ellipsis
+    white-space : nowrap
+
   &__spiner-wrapper
     position : absolute
     left : 0

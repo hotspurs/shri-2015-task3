@@ -51,6 +51,7 @@ var application = {
     'src/stylesheets/**'
   ],
   js : [
+    'src/javascripts/id3parser.js',
     'src/javascripts/loader.js',
     'src/javascripts/progress.js',
     'src/javascripts/player.js',

@@ -1,4 +1,5 @@
-modules.define('loader', ['i-bem__dom'], function(provide, BEMDOM){
+modules.define('loader', ['i-bem__dom', 'id3parser'], function(provide, BEMDOM, id3parser){
+
     provide( BEMDOM.decl(this.name, {
         onSetMod : {
             js : {
@@ -18,23 +19,37 @@ modules.define('loader', ['i-bem__dom'], function(provide, BEMDOM){
             this._loadFiles(files);
         },
         _onDropZoneDragOver : function(e){
-            console.log('HERE');
             e.stopPropagation();
             e.preventDefault();        
         },
         _loadFiles : function(files){
-            
+            var self = this;
+
             for(var i = 0; i < files.length; i++){
-                var self = this;
-                (function(){
-                    var name = files[i].name;
-                    var reader = new FileReader();
+                
+                (function(i){
+                    var reader = new FileReader(),
+                        title,
+                        artist;
+
                     reader.onload = function(e){
                         var data = e.target.result
-                        self.emit('load', { buffer : data, name : name })
-                    }
-                    reader.readAsArrayBuffer(files[i])
-                })();
+                        self.emit('load', { buffer : data, artist : artist, title : title })
+                    };
+
+                    reader.onerror = function(e) {
+                        callback('File read failed');
+                    };
+
+                    id3parser.getMetaData(files[i], function(err, tags){
+
+                      title = tags.title || files[i].name;
+                      artist = tags.artist || "";
+
+                      reader.readAsArrayBuffer(files[i])
+                    });
+
+                })(i);
             }
 
         }

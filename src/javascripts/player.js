@@ -14,7 +14,6 @@ modules.define('player', ['i-bem__dom'], function(provide, BEMDOM){
         throw new Error('AudioContext not supported');
     }
   }
-
   provide(BEMDOM.decl(this.name, {
         onSetMod: {
             js: {
@@ -66,7 +65,7 @@ modules.define('player', ['i-bem__dom'], function(provide, BEMDOM){
             this._audioContext.decodeAudioData(data.buffer, function(buffer){
                 var endtDecodeTime = +new Date;
                 console.log('Total decode time', (endtDecodeTime - startDecodeTime) / 1000 );
-                self._playList.push( { name : data.name, buffer : buffer } );
+                self._playList.push( { title : data.title, artist : data.artist, buffer : buffer } );
                 console.log(self._playList);
                 self.delMod(self.elem('spiner'), 'visible');
                 if(!self._source && self._playList.length === 1){
@@ -76,7 +75,8 @@ modules.define('player', ['i-bem__dom'], function(provide, BEMDOM){
                     self.setMod(self.elem('icon'), 'inited');
                 }
             },function(e){
-                "Error with decoding audio data" + e.err
+                alert('Error with decoding audio data. Try another file =(')
+                console("Error with decoding audio data" + e.err);
             }
             );
         },
@@ -88,10 +88,18 @@ modules.define('player', ['i-bem__dom'], function(provide, BEMDOM){
           var roudDuration = Math.round(duration),
               minutes = Math.floor(roudDuration / 60),
               seconds = roudDuration % 60;
+              if(minutes < 10){
+                minutes = '0'+minutes; 
+              }
+              if(seconds < 10){
+                seconds = '0'+seconds; 
+              }
+
             this.elem('time').text(minutes+':'+seconds);
         },
-        _setSongName : function(name){
-            this.elem('song').text(name);
+        _setSongInfo : function(song){
+            var separator = song.artist ? ' - ' : '';
+            this.elem('song-info').text(song.title + separator + song.artist);
         },
         _onSongEnd : function(){
             this._isPlaying = false;
@@ -134,13 +142,12 @@ modules.define('player', ['i-bem__dom'], function(provide, BEMDOM){
             console.log('STOP');
             cancelAnimationFrame(this.rafTimer);
             cancelAnimationFrame(this.visualizator.rAfTimer);
-            console.log('что тут?',this.rafTimer)
             this.rafTimer = null;
             clearInterval(this.progressTimer);
             clearTimeout(this.endOfSongTimer);
             this._currentSongTime += (this._audioContext.currentTime - this._currentSongStartTime);
             console.log('Текущие время песни ', this._currentSongTime);
-            this._source.stop();
+            this._source.stop(0);
             this._isPlaying = false;
             this._source =  null;
         },
@@ -149,7 +156,7 @@ modules.define('player', ['i-bem__dom'], function(provide, BEMDOM){
            this._source.buffer = song.buffer;
            this._currentSong = index;
            this._setTime(song.buffer.duration);
-           this._setSongName(song.name);
+           this._setSongInfo(song);
         },
         _currentSongStartTime : 0.0,
         _currentSong : null,

@@ -252,14 +252,17 @@ html, body {
   opacity: 1;
 }
 /* line 70, ../_sass/player.sass */
-.player__song {
+.player__song-info {
   height: 26px;
   line-height: 26px;
   background-color: #19191b;
-  padding-left: 46px;
+  padding: 0 46px;
   color: #fff;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
-/* line 76, ../_sass/player.sass */
+/* line 80, ../_sass/player.sass */
 .player__spiner-wrapper {
   position: absolute;
   left: 0;
@@ -268,7 +271,7 @@ html, body {
   bottom: 0;
   background-color: #fff;
 }
-/* line 84, ../_sass/player.sass */
+/* line 88, ../_sass/player.sass */
 .player__spiner {
   font-size: 10px;
   position: absolute;
@@ -289,13 +292,13 @@ html, body {
   height: 6px;
   display: none;
 }
-/* line 103, ../_sass/player.sass */
+/* line 107, ../_sass/player.sass */
 .player__spiner:after {
   border-radius: 50%;
   width: 6px;
   height: 6px;
 }
-/* line 107, ../_sass/player.sass */
+/* line 111, ../_sass/player.sass */
 .player__spiner_visible {
   display: block;
 }
@@ -398,9 +401,9 @@ html, body {
   position: absolute;
   top: 50%;
   left: 50%;
-  margin: -3px 0 0 -3px;
-  height: 6px;
-  width: 6px;
+  margin: -2px 0 0 -2px;
+  height: 4px;
+  width: 4px;
   -moz-border-radius: 50%;
   -webkit-border-radius: 50%;
   border-radius: 50%;
