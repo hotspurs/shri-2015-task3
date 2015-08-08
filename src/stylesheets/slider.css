@@ -1,0 +1,17 @@
+/*
+ * Retina helper mixins for Compass
+ * http://www.joelambert.co.uk
+ *
+ * Copyright 2012, Joe Lambert.
+ * Free to use under the MIT license.
+ * http://joelambert.mit-license.org/
+ */
+/* line 3, ../_sass/slider.sass */
+.slider {
+  display: inline-block;
+  margin-right: 10px;
+}
+/* line 7, ../_sass/slider.sass */
+.slider:last-child {
+  margin-right: 0;
+}

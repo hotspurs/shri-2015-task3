@@ -957,7 +957,7 @@ modules.define('progress', function(provide, progress){
 
   }))
 });
-modules.define('player', ['i-bem__dom'], function(provide, BEMDOM){
+modules.define('player', ['i-bem','i-bem__dom'], function(provide, BEM, BEMDOM){
 
   function getAudioContext(){
     if(typeof AudioContext !== 'undefined'){
@@ -978,35 +978,51 @@ modules.define('player', ['i-bem__dom'], function(provide, BEMDOM){
             js: {
                 inited: function() {
                     console.log('Player inited');
+                    
                     this._audioContext = getAudioContext();
                     this._analyser = this._audioContext.createAnalyser();
-                    this._analyser.connect(this._audioContext.destination);
                     this._settingAnalyser();
                     this._playList = [];
                     this._isPlaying = false;
                     this.visualizator = this.findBlockInside('visualizator');
+                    this.equalizer = this.findBlockInside('equalizer');
                     this.elem('wrapper').draggable({ cancel: '.player__action, .player__progress, .player__time, .player__volume, .player__icon', stack:'div'});
+                    
+                    this.elem('wrapper').css( { top : this.domElem.height() /2 - this.elem('wrapper').height() / 2, 
+                    left : this.domElem.width() /2 - this.elem('wrapper').width() / 2, opacity : 1} )
 
                     this.findBlocksInside('progress')[1].on('change', this._onChangeProgress, this );
+                    this.findBlockInside('equalizer').on('equalizerInited', this._onEqualizerInited, this);
 
                     this.bindTo( this.elem('icon', 'visualizator'), 'click', this._toggleVisualizator );
+                    this.bindTo( this.elem('icon', 'equalizer'), 'click', this._toggleEqualizer );
 
+                    this.emit('playerInited');
                 }
             }
         },
-
+        _onEqualizerInited : function(){
+          this.equalizer.filters[this.equalizer.filters.length - 1].connect(this._analyser)
+          this._analyser.connect(this._audioContext.destination);
+        },
         _settingAnalyser : function(){
             this._analyser.minDecibels = -140;
             this._analyser.maxDecibels = 0;
-            this._analyser.smothngTimeConstant = 0.8;
-            this._analyser.fftSize = 2048;
+            this._analyser.smothngTimeConstant = 0;
+            this._analyser.fftSize = 1024;
             this._freqs = new Uint8Array(this._analyser.frequencyBinCount);
         },
         _toggleVisualizator : function(){
-            if( this.hasMod( this.elem('icon', 'visualizator'), 'inited' ) ){
-                this.toggleMod( this.elem('icon', 'visualizator'), 'active' );
-                this.emit('toggleVisualizator');
-            }
+          if( this.hasMod( this.elem('icon', 'visualizator'), 'inited' ) ){
+            this.toggleMod( this.elem('icon', 'visualizator'), 'active' );
+            this.emit('toggleVisualizator');
+          }
+        },
+        _toggleEqualizer : function(){
+          if(this.hasMod( this.elem('icon', 'equalizer'), 'inited' )){
+            this.toggleMod( this.elem('icon', 'equalizer'), 'active' );
+            this.emit('toggleEqualizer');            
+          }
         },
         _onChangeProgress : function(e, data){
             this._currentSongTime =  this._playList[this._currentSong].buffer.duration / 100 * data.value;
@@ -1034,6 +1050,7 @@ modules.define('player', ['i-bem__dom'], function(provide, BEMDOM){
                     self.setMod(self.elem('icon'), 'inited');
                 }
             },function(e){
+                self.delMod(this.elem('spiner'), 'visible');
                 alert('Error with decoding audio data. Try another file =(')
                 console("Error with decoding audio data" + e.err);
             }
@@ -1041,7 +1058,7 @@ modules.define('player', ['i-bem__dom'], function(provide, BEMDOM){
         },
         _createBufferSource : function(){
             this._source = this._audioContext.createBufferSource();
-            this._source.connect(this._analyser);
+            this._source.connect(this.equalizer.filters[0]);
         },
         _setTime : function(duration){
           var roudDuration = Math.round(duration),
@@ -1153,11 +1170,11 @@ modules.define('visualizator', ['i-bem','i-bem__dom'], function(provide, BEM, BE
           BEM.blocks['player'].on('toggleVisualizator', this._onToggle, this);
           this.domElem.draggable({stack:'div'});
           this.bindTo( this.elem('close'), 'click', this._onClickClose );
+          this.outerWidth = this.domElem.outerWidth();
       	}
       }
     },
     draw : function(){
-      console.log('DRAW');
       var width,
           canvasheight,
           canvasWidth,
@@ -1166,6 +1183,7 @@ modules.define('visualizator', ['i-bem','i-bem__dom'], function(provide, BEM, BE
       canvasheight = this._canvas.height = 196;
       this.player._analyser.getByteFrequencyData(this.player._freqs);
       width = Math.floor(1/this.player._freqs.length,10);
+
       for(var i = 0; i < this.player._analyser.frequencyBinCount; i++){
         var value = this.player._freqs[i],
             percent = value / 256,
@@ -1196,14 +1214,132 @@ modules.define('visualizator', ['i-bem','i-bem__dom'], function(provide, BEM, BE
 
       var playerElemWrapper = this.player.elem('wrapper'),
           playerElemWrapperOffset = playerElemWrapper.offset(),
+
           top = playerElemWrapperOffset.top,
-          left = playerElemWrapperOffset.left + playerElemWrapper.width() + 10;
+          left = playerElemWrapperOffset.left - this.outerWidth - 10;
 
       this.domElem.css({ top : top, left : left});
     }
   },{
   }))
 });
+modules.define('equalizer', ['i-bem','i-bem__dom'], function(provide, BEM, BEMDOM){
+
+  provide(BEMDOM.decl(this.name, {
+    onSetMod : {
+      js : {
+        inited : function(){
+      	  console.log('Equalizer inited');
+      	  this.sliders = null;
+      	  this.player = this.findBlockOutside('player');
+      	  BEM.blocks['player'].on('playerInited', this._initFilters, this);
+          BEM.blocks['player'].on('toggleEqualizer', this._onToggle, this);
+          this.domElem.draggable({stack:'div'});
+          this.bindTo( this.elem('close'), 'click', this._onClickClose );
+          this.bindTo( this.elem('select'), 'change', this._onSelectChange );
+          this.settings = {
+          	'normal' : [0,0,0,0,0,0,0,0,0,0],
+          	'pop' : [-2,-1,0,2,5,5,2,0,-1,-2],
+          	'rock' : [6,5,3,1,-1,-1,0,3,4,5],
+          	'jazz' : [5,3,1,3,-2,-2,0,1,3,4],
+          	'classic' : [6,4,3,2,-3,-3,-1,3,4,6]
+          }
+        }
+      }
+  	},
+  	_onSelectChange : function(e){
+      var value = e.target.value.toLowerCase(),
+          self = this;
+
+      if(!this.sliders){
+      	this.sliders = this.findBlocksInside('slider');
+      }
+
+      this.settings[value].map(function(value, index){
+        self.sliders[index].emit('setValue', {value : value});
+      });
+
+
+  	},
+  	_initFilters : function(){
+      var frequencies = [32, 64, 125, 250, 500, 1000, 2000, 4000, 8000, 16000],
+          filters = [],
+          self = this;
+
+      
+      frequencies.forEach(function(frequency, index){
+      	 var filter = self.player._audioContext.createBiquadFilter();
+      	 filter.type = 'peaking';
+      	 filter.Q.value = 1;
+      	 filter.frequency.value = frequency;
+      	 filter.gain.value = 0;
+      	 filter.index = index;
+      	 filters.push( filter );
+      });
+
+      filters.reduce(function(prev, current){
+      	prev.connect(current);
+      	return current;
+      });
+
+      this.filters = filters;
+
+      this.emit('equalizerInited');
+  	},
+    _onToggle : function(){
+      this.toggleMod('visible');
+      this._setCords();
+    },
+    _onClickClose : function(){
+      this.player._toggleEqualizer();
+    },
+    _setCords : function(){
+
+      var playerElemWrapper = this.player.elem('wrapper'),
+          playerElemWrapperOffset = playerElemWrapper.offset(),
+          top = playerElemWrapperOffset.top,
+          left = playerElemWrapperOffset.left + playerElemWrapper.width() + 10;
+
+          this.domElem.css({ top : top, left : left});
+    }
+  },{
+  }))
+  
+
+});
+modules.define('slider', ['i-bem__dom'], function(provide, BEMDOM){
+
+	provide(BEMDOM.decl(this.name, {
+		onSetMod : {
+			js : {
+				inited : function(){
+					console.log('Slider inited');
+					var self = this;
+					this.filter = this.findBlockOutside('equalizer').filters[this.params.index];
+					this.on('setValue', this._onSetValue);
+					this.domElem.slider({
+						orientation: "vertical",
+						value : 0,
+						min : -12,
+						max : 12,
+						step : 1,
+						change : function(event, ui){
+							self.filter.gain.value = ui.value;
+							console.log(self.filter.gain.value);
+						}
+					});
+					
+				}
+			}
+		},
+		_onSetValue : function(e, data){
+			this.domElem.slider( "value", data.value );
+		}
+	},{
+
+	}))
+
+})
 modules.require(
     ['i-bem__dom_init', 'jquery', 'next-tick'],
     function(init, $, nextTick) {

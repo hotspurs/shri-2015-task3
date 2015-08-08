@@ -10,11 +10,11 @@ modules.define('visualizator', ['i-bem','i-bem__dom'], function(provide, BEM, BE
           BEM.blocks['player'].on('toggleVisualizator', this._onToggle, this);
           this.domElem.draggable({stack:'div'});
           this.bindTo( this.elem('close'), 'click', this._onClickClose );
+          this.outerWidth = this.domElem.outerWidth();
       	}
       }
     },
     draw : function(){
-      console.log('DRAW');
       var width,
           canvasheight,
           canvasWidth,
@@ -23,6 +23,7 @@ modules.define('visualizator', ['i-bem','i-bem__dom'], function(provide, BEM, BE
       canvasheight = this._canvas.height = 196;
       this.player._analyser.getByteFrequencyData(this.player._freqs);
       width = Math.floor(1/this.player._freqs.length,10);
+
       for(var i = 0; i < this.player._analyser.frequencyBinCount; i++){
         var value = this.player._freqs[i],
             percent = value / 256,
@@ -53,8 +54,9 @@ modules.define('visualizator', ['i-bem','i-bem__dom'], function(provide, BEM, BE
 
       var playerElemWrapper = this.player.elem('wrapper'),
           playerElemWrapperOffset = playerElemWrapper.offset(),
+
           top = playerElemWrapperOffset.top,
-          left = playerElemWrapperOffset.left + playerElemWrapper.width() + 10;
+          left = playerElemWrapperOffset.left - this.outerWidth - 10;
 
       this.domElem.css({ top : top, left : left});
     }

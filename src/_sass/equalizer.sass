@@ -1,20 +1,16 @@
 @import includes
 
-.visualizator
+.equalizer
   display : none
-  width : 220px
   padding : 15px
-  height : 196px
   background-color : #232326
   +border-radius(5px)
   z-index : 0
   position : absolute
+  width : 246px
 
   &_visible
     display : block
-  
-  &__canvas
-    width : 100%
 
   &__close
     cursor : pointer
@@ -35,4 +31,7 @@
       width : 4px
       +border-radius(50%)
       background-color : #3f3f42
-    
+
+  &__select
+    display : block
+    margin-bottom : 20px

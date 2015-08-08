@@ -1,4 +1,4 @@
-modules.define('player', ['i-bem__dom'], function(provide, BEMDOM){
+modules.define('player', ['i-bem','i-bem__dom'], function(provide, BEM, BEMDOM){
 
   function getAudioContext(){
     if(typeof AudioContext !== 'undefined'){
@@ -19,35 +19,51 @@ modules.define('player', ['i-bem__dom'], function(provide, BEMDOM){
             js: {
                 inited: function() {
                     console.log('Player inited');
+                    
                     this._audioContext = getAudioContext();
                     this._analyser = this._audioContext.createAnalyser();
-                    this._analyser.connect(this._audioContext.destination);
                     this._settingAnalyser();
                     this._playList = [];
                     this._isPlaying = false;
                     this.visualizator = this.findBlockInside('visualizator');
+                    this.equalizer = this.findBlockInside('equalizer');
                     this.elem('wrapper').draggable({ cancel: '.player__action, .player__progress, .player__time, .player__volume, .player__icon', stack:'div'});
+                    
+                    this.elem('wrapper').css( { top : this.domElem.height() /2 - this.elem('wrapper').height() / 2, 
+                    left : this.domElem.width() /2 - this.elem('wrapper').width() / 2, opacity : 1} )
 
                     this.findBlocksInside('progress')[1].on('change', this._onChangeProgress, this );
+                    this.findBlockInside('equalizer').on('equalizerInited', this._onEqualizerInited, this);
 
                     this.bindTo( this.elem('icon', 'visualizator'), 'click', this._toggleVisualizator );
+                    this.bindTo( this.elem('icon', 'equalizer'), 'click', this._toggleEqualizer );
 
+                    this.emit('playerInited');
                 }
             }
         },
-
+        _onEqualizerInited : function(){
+          this.equalizer.filters[this.equalizer.filters.length - 1].connect(this._analyser)
+          this._analyser.connect(this._audioContext.destination);
+        },
         _settingAnalyser : function(){
             this._analyser.minDecibels = -140;
             this._analyser.maxDecibels = 0;
-            this._analyser.smothngTimeConstant = 0.8;
-            this._analyser.fftSize = 2048;
+            this._analyser.smothngTimeConstant = 0;
+            this._analyser.fftSize = 1024;
             this._freqs = new Uint8Array(this._analyser.frequencyBinCount);
         },
         _toggleVisualizator : function(){
-            if( this.hasMod( this.elem('icon', 'visualizator'), 'inited' ) ){
-                this.toggleMod( this.elem('icon', 'visualizator'), 'active' );
-                this.emit('toggleVisualizator');
-            }
+          if( this.hasMod( this.elem('icon', 'visualizator'), 'inited' ) ){
+            this.toggleMod( this.elem('icon', 'visualizator'), 'active' );
+            this.emit('toggleVisualizator');
+          }
+        },
+        _toggleEqualizer : function(){
+          if(this.hasMod( this.elem('icon', 'equalizer'), 'inited' )){
+            this.toggleMod( this.elem('icon', 'equalizer'), 'active' );
+            this.emit('toggleEqualizer');            
+          }
         },
         _onChangeProgress : function(e, data){
             this._currentSongTime =  this._playList[this._currentSong].buffer.duration / 100 * data.value;
@@ -75,6 +91,7 @@ modules.define('player', ['i-bem__dom'], function(provide, BEMDOM){
                     self.setMod(self.elem('icon'), 'inited');
                 }
             },function(e){
+                self.delMod(this.elem('spiner'), 'visible');
                 alert('Error with decoding audio data. Try another file =(')
                 console("Error with decoding audio data" + e.err);
             }
@@ -82,7 +99,7 @@ modules.define('player', ['i-bem__dom'], function(provide, BEMDOM){
         },
         _createBufferSource : function(){
             this._source = this._audioContext.createBufferSource();
-            this._source.connect(this._analyser);
+            this._source.connect(this.equalizer.filters[0]);
         },
         _setTime : function(duration){
           var roudDuration = Math.round(duration),

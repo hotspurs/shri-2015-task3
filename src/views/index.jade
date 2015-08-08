@@ -31,5 +31,15 @@ html
         .visualizator(class="i-bem" data-bem='{ "visualizator": {} }' )
           canvas.visualizator__canvas
           .visualizator__close
-
+        .equalizer(class="i-bem" data-bem='{ "equalizer": {} }' )
+          .equalizer__close
+          select.equalizer__select
+            option Normal
+            option Pop
+            option Rock
+            option Jazz
+            option Classic
+          - var n = 0
+            while n < 10
+              .slider(class="i-bem" data-bem='{ "slider": {"index": #{n++}} }' )
     script(src="public/build.js")

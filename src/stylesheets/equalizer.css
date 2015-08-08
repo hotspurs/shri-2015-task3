@@ -6,29 +6,24 @@
  * Free to use under the MIT license.
  * http://joelambert.mit-license.org/
  */
-/* line 3, ../_sass/visualizator.sass */
-.visualizator {
+/* line 3, ../_sass/equalizer.sass */
+.equalizer {
   display: none;
-  width: 220px;
   padding: 15px;
-  height: 196px;
   background-color: #232326;
   -moz-border-radius: 5px;
   -webkit-border-radius: 5px;
   border-radius: 5px;
   z-index: 0;
   position: absolute;
+  width: 246px;
 }
-/* line 13, ../_sass/visualizator.sass */
-.visualizator_visible {
+/* line 12, ../_sass/equalizer.sass */
+.equalizer_visible {
   display: block;
 }
-/* line 16, ../_sass/visualizator.sass */
-.visualizator__canvas {
-  width: 100%;
-}
-/* line 19, ../_sass/visualizator.sass */
-.visualizator__close {
+/* line 15, ../_sass/equalizer.sass */
+.equalizer__close {
   cursor: pointer;
   position: absolute;
   top: 10px;
@@ -40,8 +35,8 @@
   border-radius: 50%;
   background-color: #fff;
 }
-/* line 28, ../_sass/visualizator.sass */
-.visualizator__close:before {
+/* line 24, ../_sass/equalizer.sass */
+.equalizer__close:before {
   content: "";
   position: absolute;
   top: 50%;
@@ -53,4 +48,9 @@
   -webkit-border-radius: 50%;
   border-radius: 50%;
   background-color: #3f3f42;
+}
+/* line 35, ../_sass/equalizer.sass */
+.equalizer__select {
+  display: block;
+  margin-bottom: 20px;
 }

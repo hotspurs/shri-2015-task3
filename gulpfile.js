@@ -37,6 +37,7 @@ gulp.task('build-watch', function () {
 var vendor = {
   css : [
       'src/vendor/normalize.css/normalize.css',
+      'src/vendor/jquery-ui.min.css',
       'src/fonts/stylesheet.css'
   ],
   js : [
@@ -56,6 +57,8 @@ var application = {
     'src/javascripts/progress.js',
     'src/javascripts/player.js',
     'src/javascripts/visualizator.js',
+    'src/javascripts/equalizer.js',
+    'src/javascripts/slider.js',
     'src/javascripts/main.js'
   ]
 };

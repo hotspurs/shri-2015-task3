@@ -18,7 +18,12 @@ html, body {
   font-family: "helveticaneuecyrroman";
 }
 
-/* line 16, ../_sass/common.sass */
+/* line 11, ../_sass/common.sass */
+.wrapper {
+  height: 100%;
+}
+
+/* line 18, ../_sass/common.sass */
 .button {
   height: 40px;
   width: 174px;
