@@ -4618,7 +4618,8 @@ modules.define('loader', ['i-bem__dom', 'id3parser'], function(provide, BEMDOM, 
         onSetMod : {
             js : {
                 inited : function(){
-                    console.log('loader inited')
+                    console.log('loader inited');
+                    this._checkSupportFormats();
                 }
             }
         },
@@ -4636,6 +4637,22 @@ modules.define('loader', ['i-bem__dom', 'id3parser'], function(provide, BEMDOM, 
             e.stopPropagation();
             e.preventDefault();        
         },
+        _checkSupportFormats : function(){
+            var audioElem = document.createElement('audio'),
+                formats = { mp3 : false, wav : false, ogg : false, mp4 : false };
+
+            formats.mp3 = !!(audioElem.canPlayType && audioElem.canPlayType('audio/mp3;').replace(/no/, ''));
+            formats.wav = !!(audioElem.canPlayType && audioElem.canPlayType('audio/wav; codecs="1"').replace(/no/, ''));
+            formats.ogg = !!(audioElem.canPlayType && audioElem.canPlayType('audio/ogg; codecs="vorbis"').replace(/no/, ''));
+            formats.mp4 = !!(audioElem.canPlayType && audioElem.canPlayType('audio/mp4; codecs="mp4a.40.2"').replace(/no/, ''));
+
+            this.supportFormats = formats;
+
+        },
+        _getFileExtension : function(file){
+          var arr = file.name.split('.');
+          return arr[arr.length-1];
+        },
         _loadFiles : function(files){
             var self = this;
 
@@ -4644,7 +4661,14 @@ modules.define('loader', ['i-bem__dom', 'id3parser'], function(provide, BEMDOM, 
                 (function(i){
                     var reader = new FileReader(),
                         title,
-                        artist;
+                        artist,
+                        file = files[i];
+
+
+                    if( !self.supportFormats[ self._getFileExtension(file) ]){
+                        alert("Format is not supported");
+                        return;
+                    }
 
                     reader.onload = function(e){
                         var data = e.target.result
@@ -4655,12 +4679,15 @@ modules.define('loader', ['i-bem__dom', 'id3parser'], function(provide, BEMDOM, 
                         callback('File read failed');
                     };
 
-                    id3parser.getMetaData(files[i], function(err, tags){
 
-                      title = tags.title || files[i].name;
+                    
+
+                    id3parser.getMetaData(file, function(err, tags){
+
+                      title = tags.title || file.name;
                       artist = tags.artist || "";
 
-                      reader.readAsArrayBuffer(files[i])
+                      reader.readAsArrayBuffer(file)
                     });
 
                 })(i);
@@ -4839,7 +4866,6 @@ modules.define('player', ['i-bem','i-bem__dom'], function(provide, BEM, BEMDOM){
                 var endtDecodeTime = +new Date;
                 console.log('Total decode time', (endtDecodeTime - startDecodeTime) / 1000 );
                 self._playList.push( { title : data.title, artist : data.artist, buffer : buffer } );
-                console.log(self._playList);
                 self.delMod(self.elem('spiner'), 'visible');
                 if(!self._source && self._playList.length === 1){
                     self._createBufferSource();
@@ -4848,7 +4874,7 @@ modules.define('player', ['i-bem','i-bem__dom'], function(provide, BEM, BEMDOM){
                     self.setMod(self.elem('icon'), 'inited');
                 }
             },function(e){
-                self.delMod(this.elem('spiner'), 'visible');
+                self.delMod(self.elem('spiner'), 'visible');
                 alert('Error with decoding audio data. Try another file =(')
                 console("Error with decoding audio data" + e.err);
             }
@@ -5123,7 +5149,6 @@ modules.define('slider', ['i-bem__dom'], function(provide, BEMDOM){
 						step : 1,
 						change : function(event, ui){
 							self.filter.gain.value = ui.value;
-							console.log(self.filter.gain.value);
 						}
 					});
 					
