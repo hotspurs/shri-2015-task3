@@ -36,7 +36,6 @@ gulp.task('build-watch', function () {
 
 var vendor = {
   css : [
-      'src/vendor/normalize.css/normalize.css',
       'src/vendor/jquery-ui.min.css',
       'src/fonts/stylesheet.css'
   ],
