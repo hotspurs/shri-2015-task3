@@ -82,7 +82,6 @@ modules.define('player', ['i-bem','i-bem__dom'], function(provide, BEM, BEMDOM){
                 var endtDecodeTime = +new Date;
                 console.log('Total decode time', (endtDecodeTime - startDecodeTime) / 1000 );
                 self._playList.push( { title : data.title, artist : data.artist, buffer : buffer } );
-                console.log(self._playList);
                 self.delMod(self.elem('spiner'), 'visible');
                 if(!self._source && self._playList.length === 1){
                     self._createBufferSource();
@@ -91,7 +90,7 @@ modules.define('player', ['i-bem','i-bem__dom'], function(provide, BEM, BEMDOM){
                     self.setMod(self.elem('icon'), 'inited');
                 }
             },function(e){
-                self.delMod(this.elem('spiner'), 'visible');
+                self.delMod(self.elem('spiner'), 'visible');
                 alert('Error with decoding audio data. Try another file =(')
                 console("Error with decoding audio data" + e.err);
             }

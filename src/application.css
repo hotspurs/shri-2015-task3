@@ -413,8 +413,9 @@ html, body {
 /* line 11, ../_sass/progress.sass */
 .progress_type_volume {
   width: 48px;
+  float: left;
 }
-/* line 14, ../_sass/progress.sass */
+/* line 15, ../_sass/progress.sass */
 .progress__current {
   height: 8px;
   width: 0;

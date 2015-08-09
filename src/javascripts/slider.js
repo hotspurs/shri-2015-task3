@@ -16,7 +16,6 @@ modules.define('slider', ['i-bem__dom'], function(provide, BEMDOM){
 						step : 1,
 						change : function(event, ui){
 							self.filter.gain.value = ui.value;
-							console.log(self.filter.gain.value);
 						}
 					});
 					
