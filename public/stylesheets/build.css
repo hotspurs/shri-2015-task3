@@ -65,11 +65,16 @@ html, body {
 }
 
 /* line 11, ../_sass/common.sass */
+body {
+  margin: 0;
+}
+
+/* line 15, ../_sass/common.sass */
 .wrapper {
   height: 100%;
 }
 
-/* line 18, ../_sass/common.sass */
+/* line 22, ../_sass/common.sass */
 .button {
   height: 40px;
   width: 174px;
@@ -160,6 +165,44 @@ html, body {
 .equalizer__select {
   display: block;
   margin-bottom: 20px;
+}
+
+/*
+ * Retina helper mixins for Compass
+ * http://www.joelambert.co.uk
+ *
+ * Copyright 2012, Joe Lambert.
+ * Free to use under the MIT license.
+ * http://joelambert.mit-license.org/
+ */
+/* line 3, ../_sass/indicator.sass */
+.indicator {
+  height: 8px;
+  background-color: #3f3f42;
+  -moz-border-radius: 3px;
+  -webkit-border-radius: 3px;
+  border-radius: 3px;
+  overflow: hidden;
+  position: relative;
+}
+/* line 9, ../_sass/indicator.sass */
+.indicator_active {
+  cursor: pointer;
+}
+/* line 12, ../_sass/indicator.sass */
+.indicator_type_time {
+  width: 220px;
+}
+/* line 15, ../_sass/indicator.sass */
+.indicator_type_volume {
+  width: 48px;
+  float: left;
+}
+/* line 19, ../_sass/indicator.sass */
+.indicator__current {
+  height: 8px;
+  width: 0;
+  background-color: #1b93c7;
 }
 
 /*

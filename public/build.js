@@ -4721,22 +4721,17 @@ modules.define('loader', ['i-bem__dom', 'id3parser'], function(provide, BEMDOM, 
     }
     ));
 });
-modules.define('progress', ['i-bem__dom'], function(provide, BEMDOM){
+modules.define('indicator', ['i-bem__dom'], function(provide, BEMDOM){
   provide( BEMDOM.decl(this.name, {
     onSetMod : {
       js : {
         inited : function(){
-          console.log('Init progress');
-          this._width = this.domElem.width();
-          this.value = 0;
-          this.active = false;
-          this.findBlockOutside('player').on('progressActive',this._onActive, this);
         }
       }
     },
     _onActive : function(){
-        console.log('Progress active');
         this.active = true;
+        this.setMod('active');
     },
     _setCurrentWidth : function(value){
         this.elem('current').width(value+'%')
@@ -4755,47 +4750,79 @@ modules.define('progress', ['i-bem__dom'], function(provide, BEMDOM){
 });
 
 
-modules.define('progress', function(provide, progress){
-  provide(progress.decl({ modName : 'type', modVal : 'time'}, {
+modules.define('indicator', function(provide, indicator){
+  provide(indicator.decl({ modName : 'type', modVal : 'time'}, {
     onSetMod : {
       js : {
         inited : function(){
-          console.log('Init progress time');
+          console.log('Init indicator time');
           this._width = this.domElem.width();
           this.value = 0;
           this.active = false;
-          this.findBlockOutside('player').on('progressActive',this._onActive, this);
+          this.findBlockOutside('player').on('indicatorActive',this._onActive, this);
           this.findBlockOutside('player').on('onProgress', this._onProgress, this);
         }
       }
     },
-    _onProgress : function(e, data){
-      this._setCurrentWidth(data.value);
-    },
     _onClick : function(e){
         this.value = Math.round( (e.offsetX / this._width) * 100);
         this._setCurrentWidth(this.value);
-        this.emit('change', { value : this.value});
+        this.emit('changeTime', { value : this.value});
+    },
+    _onProgress : function(e, data){
+      this._setCurrentWidth(data.value);
     }
   },
   {
 
   }))
 });
+
+modules.define('indicator', function(provide, indicator){
+  provide(indicator.decl({ modName : 'type', modVal : 'volume'}, {
+    onSetMod : {
+      js : {
+        inited : function(){
+          console.log('Init indicator volume');
+          this._width = this.domElem.width();
+          this.value = 0;
+          this.active = false;
+          this.findBlockOutside('player').on('indicatorActive',this._onActive, this);
+        }
+      }
+    },
+    _onClick : function(e){
+        this.value = Math.round( (e.offsetX / this._width) * 100);
+        this._setCurrentWidth(this.value);
+        this.emit('changeVolume', { value : this.value});
+    },
+    _onActive : function(){
+        this.active = true;
+        this.setMod('active');
+        this.emit('changeVolume', { value : 50});
+        this._setCurrentWidth(50);
+    }
+  },
+  {
+
+  }))
+});
+
+
 modules.define('player', ['i-bem','i-bem__dom'], function(provide, BEM, BEMDOM){
 
   function getAudioContext(){
     if(typeof AudioContext !== 'undefined'){
-        return new AudioContext();
+      return new AudioContext();
     }
     else if(typeof webkitAudioContext !== 'undefined'){
-        return new webkitAudioContext();
+      return new webkitAudioContext();
     }
     else if(typeof mozAudioContext !== 'undefined'){
-        return mozAudioContext();
+      return mozAudioContext();
     }
     else{
-        throw new Error('AudioContext not supported');
+      throw new Error('AudioContext not supported');
     }
   }
   provide(BEMDOM.decl(this.name, {
@@ -4806,6 +4833,7 @@ modules.define('player', ['i-bem','i-bem__dom'], function(provide, BEM, BEMDOM){
                     
                     this._audioContext = getAudioContext();
                     this._analyser = this._audioContext.createAnalyser();
+                    this._gain = this._audioContext.createGain();
                     this._settingAnalyser();
                     this._playList = [];
                     this._isPlaying = false;
@@ -4816,7 +4844,9 @@ modules.define('player', ['i-bem','i-bem__dom'], function(provide, BEM, BEMDOM){
                     this.elem('wrapper').css( { top : this.domElem.height() /2 - this.elem('wrapper').height() / 2, 
                     left : this.domElem.width() /2 - this.elem('wrapper').width() / 2, opacity : 1} )
 
-                    this.findBlocksInside('progress')[1].on('change', this._onChangeProgress, this );
+                    this.findBlocksInside('indicator')[1].on('changeTime', this._onChangeProgress, this );
+                    this.findBlocksInside('indicator')[0].on('changeVolume', this._onChangeVolume, this );
+
                     this.findBlockInside('equalizer').on('equalizerInited', this._onEqualizerInited, this);
 
                     this.bindTo( this.elem('icon', 'visualizator'), 'click', this._toggleVisualizator );
@@ -4826,16 +4856,22 @@ modules.define('player', ['i-bem','i-bem__dom'], function(provide, BEM, BEMDOM){
                 }
             }
         },
+        _onChangeVolume : function(e, data){
+          this._gain.gain.value = data.value/100;
+          console.log('Volume ',this._gain.gain.value);
+
+        },
         _onEqualizerInited : function(){
           this.equalizer.filters[this.equalizer.filters.length - 1].connect(this._analyser)
-          this._analyser.connect(this._audioContext.destination);
+          this._analyser.connect(this._gain);
+          this._gain.connect(this._audioContext.destination)
         },
         _settingAnalyser : function(){
-            this._analyser.minDecibels = -140;
-            this._analyser.maxDecibels = 0;
-            this._analyser.smothngTimeConstant = 0;
-            this._analyser.fftSize = 1024;
-            this._freqs = new Uint8Array(this._analyser.frequencyBinCount);
+          this._analyser.minDecibels = -140;
+          this._analyser.maxDecibels = 0;
+          this._analyser.smothngTimeConstant = 0;
+          this._analyser.fftSize = 1024;
+          this._freqs = new Uint8Array(this._analyser.frequencyBinCount);
         },
         _toggleVisualizator : function(){
           if( this.hasMod( this.elem('icon', 'visualizator'), 'inited' ) ){
@@ -4850,135 +4886,134 @@ modules.define('player', ['i-bem','i-bem__dom'], function(provide, BEM, BEMDOM){
           }
         },
         _onChangeProgress : function(e, data){
-            this._currentSongTime =  this._playList[this._currentSong].buffer.duration / 100 * data.value;
-            if(this._isPlaying){
-              this.stop();
-              this.play();
-            }
+          this._currentSongTime =  this._playList[this._currentSong].buffer.duration / 100 * data.value;
+          if(this._isPlaying){
+            this.stop();
+            this.play();
+          }
 
         },
         _decodeAndSaveBuffer : function(data){
-            console.log('DecodeAudioData.... ')
-            var startDecodeTime = +new Date;
-            var self = this;
-            this.setMod(this.elem('spiner'), 'visible');
-            this._audioContext.decodeAudioData(data.buffer, function(buffer){
-                var endtDecodeTime = +new Date;
-                console.log('Total decode time', (endtDecodeTime - startDecodeTime) / 1000 );
-                self._playList.push( { title : data.title, artist : data.artist, buffer : buffer } );
-                self.delMod(self.elem('spiner'), 'visible');
-                if(!self._source && self._playList.length === 1){
-                    self._createBufferSource();
-                    self._setAtIndex(0);
-                    self.emit('progressActive');
-                    self.setMod(self.elem('icon'), 'inited');
-                }
-            },function(e){
-                self.delMod(self.elem('spiner'), 'visible');
-                alert('Error with decoding audio data. Try another file =(')
-                console("Error with decoding audio data" + e.err);
+          console.log('DecodeAudioData.... ')
+          var startDecodeTime = +new Date;
+          var self = this;
+          this.setMod(this.elem('spiner'), 'visible');
+          this._audioContext.decodeAudioData(data.buffer, function(buffer){
+            var endDecodeTime = +new Date;
+            console.log('Total decode time', (endDecodeTime - startDecodeTime) / 1000 );
+            self._playList.push( { title : data.title, artist : data.artist, buffer : buffer } );
+            self.delMod(self.elem('spiner'), 'visible');
+            if(!self._source && self._playList.length === 1){
+              self._createBufferSource();
+              self._setAtIndex(0);
+              self.emit('indicatorActive');
+              self.setMod(self.elem('icon'), 'inited');
             }
-            );
+            },function(e){
+              self.delMod(self.elem('spiner'), 'visible');
+              alert('Error with decoding audio data. Try another file =(')
+              console("Error with decoding audio data" + e.err);
+            }
+        );
         },
         _createBufferSource : function(){
-            this._source = this._audioContext.createBufferSource();
-            this._source.connect(this.equalizer.filters[0]);
+          this._source = this._audioContext.createBufferSource();
+          this._source.connect(this.equalizer.filters[0]);
         },
         _setTime : function(duration){
           var roudDuration = Math.round(duration),
               minutes = Math.floor(roudDuration / 60),
               seconds = roudDuration % 60;
-              if(minutes < 10){
-                minutes = '0'+minutes; 
-              }
-              if(seconds < 10){
-                seconds = '0'+seconds; 
-              }
-
-            this.elem('time').text(minutes+':'+seconds);
+          if(minutes < 10){
+            minutes = '0'+minutes; 
+          }
+          if(seconds < 10){
+            seconds = '0'+seconds; 
+          }
+          this.elem('time').text(minutes+':'+seconds);
         },
         _setSongInfo : function(song){
-            var separator = song.artist ? ' - ' : '';
-            this.elem('song-info').text(song.title + separator + song.artist);
+          var separator = song.artist ? ' - ' : '';
+          this.elem('song-info').text(song.title + separator + song.artist);
         },
         _onSongEnd : function(){
-            this._isPlaying = false;
-            this._source =  null;
-            this.toggleMod(this.elem('action'),'stop');
-            this._currentSongTime = 0.0;
-            this.emit('onProgress', { value : 0 });
-            setTimeout( this.visualizator.clear.bind(this.visualizator), 50 );
+          this._isPlaying = false;
+          this._source =  null;
+          this.toggleMod(this.elem('action'),'stop');
+          this._currentSongTime = 0.0;
+          this.emit('onProgress', { value : 0 });
+          setTimeout( this.visualizator.clear.bind(this.visualizator), 50 );
         },
         play : function(){
-            console.log('PLAY');
-            var self = this;
-            this._isPlaying = true;
-            this._currentSongStartTime = this._audioContext.currentTime;
+          console.log('PLAY');
+          var self = this;
+          this._isPlaying = true;
+          this._currentSongStartTime = this._audioContext.currentTime;
 
-            if(!this._source){
-                this._createBufferSource();
-                this._setAtIndex(this._currentSong);
+          if(!this._source){
+            this._createBufferSource();
+            this._setAtIndex(this._currentSong);
 
-            }
-            
-            this.rafTimer = requestAnimationFrame(this.visualizator.draw.bind(this.visualizator));
+          }
+        
+          this.rafTimer = requestAnimationFrame(this.visualizator.draw.bind(this.visualizator));
 
-            this._source.start( this._audioContext.currentTime, this._currentSongTime );
+          this._source.start( this._audioContext.currentTime, this._currentSongTime );
 
-            this.progressTimer = setInterval(function(){
-                var currentTime = (self._audioContext.currentTime - self._currentSongStartTime ) + self._currentSongTime;
-                var value = Math.round( (currentTime / self._playList[self._currentSong].buffer.duration)*100 );
-                console.log('Value', value);
-                self.emit('onProgress', { value : value })
-            }, 1000);
+          this.progressTimer = setInterval(function(){
+            var currentTime = (self._audioContext.currentTime - self._currentSongStartTime ) + self._currentSongTime;
+            var value = Math.round( (currentTime / self._playList[self._currentSong].buffer.duration)*100 );
+            console.log('Value', value);
+            self.emit('onProgress', { value : value })
+          }, 1000);
 
-            this.endOfSongTimer = setTimeout(function(){
-                clearInterval(self.progressTimer);
-                self._onSongEnd();
-            }, Math.round( self._playList[self._currentSong].buffer.duration - self._currentSongTime)* 1000  )
+          this.endOfSongTimer = setTimeout(function(){
+            clearInterval(self.progressTimer);
+            self._onSongEnd();
+          }, Math.round( self._playList[self._currentSong].buffer.duration - self._currentSongTime)* 1000  )
            
         },
         stop : function(){
-            console.log('STOP');
-            cancelAnimationFrame(this.rafTimer);
-            cancelAnimationFrame(this.visualizator.rAfTimer);
-            this.rafTimer = null;
-            clearInterval(this.progressTimer);
-            clearTimeout(this.endOfSongTimer);
-            this._currentSongTime += (this._audioContext.currentTime - this._currentSongStartTime);
-            console.log('Текущие время песни ', this._currentSongTime);
-            this._source.stop(0);
-            this._isPlaying = false;
-            this._source =  null;
+          console.log('STOP');
+          cancelAnimationFrame(this.rafTimer);
+          cancelAnimationFrame(this.visualizator.rAfTimer);
+          this.rafTimer = null;
+          clearInterval(this.progressTimer);
+          clearTimeout(this.endOfSongTimer);
+          this._currentSongTime += (this._audioContext.currentTime - this._currentSongStartTime);
+          console.log('Текущие время песни ', this._currentSongTime);
+          this._source.stop(0);
+          this._isPlaying = false;
+          this._source =  null;
         },
         _setAtIndex : function(index){
-           var song = this._playList[index];
-           this._source.buffer = song.buffer;
-           this._currentSong = index;
-           this._setTime(song.buffer.duration);
-           this._setSongInfo(song);
+          var song = this._playList[index];
+          this._source.buffer = song.buffer;
+          this._currentSong = index;
+          this._setTime(song.buffer.duration);
+          this._setSongInfo(song);
         },
         _currentSongStartTime : 0.0,
         _currentSong : null,
         _currentSongTime : 0.0
     },
     {
-       live : function(){
-          var self = this;
+      live : function(){
+        var self = this;
 
-          this.liveInitOnBlockInsideEvent('load', 'loader', function(e, data){
-             this._decodeAndSaveBuffer(data);
-          });
+        this.liveInitOnBlockInsideEvent('load', 'loader', function(e, data){
+          this._decodeAndSaveBuffer(data);
+        });
 
-          this.liveBindTo('action', 'click', function(e){
-            if(this._playList.length === 0) return;
-            if(this._isPlaying) this.stop();
-            else this.play();
-            this.toggleMod(this.elem('action'),'stop');
-          });
+        this.liveBindTo('action', 'click', function(e){
+          if(this._playList.length === 0) return;
+          if(this._isPlaying) this.stop();
+          else this.play();
+          this.toggleMod(this.elem('action'),'stop');
+        });
 
-          return false; 
-       }
+        return false; 
+      }
     }
     ));
 });
