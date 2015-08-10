@@ -53,7 +53,7 @@ var application = {
   js : [
     'src/javascripts/id3parser.js',
     'src/javascripts/loader.js',
-    'src/javascripts/progress.js',
+    'src/javascripts/indicator.js',
     'src/javascripts/player.js',
     'src/javascripts/visualizator.js',
     'src/javascripts/equalizer.js',

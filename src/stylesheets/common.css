@@ -19,11 +19,16 @@ html, body {
 }
 
 /* line 11, ../_sass/common.sass */
+body {
+  margin: 0;
+}
+
+/* line 15, ../_sass/common.sass */
 .wrapper {
   height: 100%;
 }
 
-/* line 18, ../_sass/common.sass */
+/* line 22, ../_sass/common.sass */
 .button {
   height: 40px;
   width: 174px;

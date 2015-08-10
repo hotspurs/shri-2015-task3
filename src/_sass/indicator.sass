@@ -1,0 +1,22 @@
+@import includes
+
+.indicator
+  height : 8px
+  background-color : #3f3f42
+  +border-radius(3px)
+  overflow : hidden
+  position : relative
+  &_active
+    cursor : pointer
+
+  &_type_time
+    width : 220px
+    
+  &_type_volume
+    width : 48px
+    float : left
+
+  &__current
+    height : 8px
+    width : 0
+    background-color : #1b93c7
