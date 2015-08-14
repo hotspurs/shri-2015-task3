@@ -1,8 +1,7 @@
-modules.require(
-    ['i-bem__dom_init', 'jquery', 'next-tick'],
-    function(init, $, nextTick) {
+modules.require(['i-bem__dom_init', 'jquery', 'next-tick'],  function(init, $, nextTick) {
 
-    $(function() {
-        nextTick(init);
-    });
+	$(function() {
+		nextTick(init);
+	});
+	
 });

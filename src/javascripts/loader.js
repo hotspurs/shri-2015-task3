@@ -31,13 +31,11 @@ modules.define('loader', ['i-bem__dom', 'id3parser'], function(provide, BEMDOM, 
             formats.wav = !!(audioElem.canPlayType && audioElem.canPlayType('audio/wav; codecs="1"').replace(/no/, ''));
             formats.ogg = !!(audioElem.canPlayType && audioElem.canPlayType('audio/ogg; codecs="vorbis"').replace(/no/, ''));
             formats.mp4 = !!(audioElem.canPlayType && audioElem.canPlayType('audio/mp4; codecs="mp4a.40.2"').replace(/no/, ''));
-
             this.supportFormats = formats;
-
         },
         _getFileExtension : function(file){
-          var arr = file.name.split('.');
-          return arr[arr.length-1];
+            var arr = file.name.split('.');
+            return arr[arr.length-1];
         },
         _loadFiles : function(files){
             var self = this;
@@ -57,35 +55,29 @@ modules.define('loader', ['i-bem__dom', 'id3parser'], function(provide, BEMDOM, 
                     }
 
                     reader.onload = function(e){
-                        var data = e.target.result
-                        self.emit('load', { buffer : data, artist : artist, title : title })
+                        var data = e.target.result;
+                        self.emit('load', { buffer : data, artist : artist, title : title });
                     };
 
                     reader.onerror = function(e) {
                         callback('File read failed');
                     };
 
-
-                    
-
                     id3parser.getMetaData(file, function(err, tags){
-
-                      title = tags.title || file.name;
-                      artist = tags.artist || "";
-
-                      reader.readAsArrayBuffer(file)
+                        title = tags.title || file.name;
+                        artist = tags.artist || "";
+                        reader.readAsArrayBuffer(file);
                     });
 
                 })(i);
             }
-
         }
     },
     {
         live : function(){
             this.liveBindTo('file', 'change', function(e){
                 this._onFileChange(e);
-            })
+            });
 
             this.liveBindTo('drop-zone', 'drop', function(e){
                 this._onDropZoneDrop(e);
